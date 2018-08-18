@@ -13,6 +13,8 @@ IMAGE_DIR = ''
 # ISO country code
 # eg. 'en-US', 'en-NZ', 'zh-CN' or just leave it
 COUNTRY_CODE = ''
+# Download image resolution (select among: 1366x768, 1920x1080 or 1920x1200)
+IMAGE_RES = '1920x1200'
 
 
 # Apple Script to set wallpaper
@@ -122,6 +124,7 @@ def main():
         print('Downloading...')
         for i in range(len(images)):
             url = 'http://www.bing.com' + images[i]['url']
+            url = url.replace("1366x768", IMAGE_RES)
             if flag_download_only:
                 download_image(url, True)
             else:

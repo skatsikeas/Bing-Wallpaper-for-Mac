@@ -1,4 +1,4 @@
-# Bing Wallpapaer for Mac
+# Bing Wallpaper for Mac
 A simple Python script capable of batch-downloading and setting Bing picture of the day as wallpaper on your Mac OS X.
 
 ## About
@@ -24,6 +24,23 @@ python bing.py -d
 ```
 
 Use `-h` or `--help` to display help message.
+
+## Automatically set daily Bing wallpaper as background on Mac 
+Using:
+1. Open this repo's folder
+2. Edit "autowall.command" and add the path to "bing.py" and save
+3. Edit "bingwallautomator.plist" and add path to "autowall.command" and save
+4. Copy "bingwallautomator.plist" to "~/Library/LaunchAgents"
+5. Go to Terminal and run the following command:
+```
+launchctl load ~/Library/LaunchAgents/bingwallautomator.plist
+```
+
+## To uninstall the above, run this command
+
+```
+launchctl unload ~/Library/LaunchAgents/bingwallautomator.plist
+```
 
 ## License
 Copyright [DeclanGao](http://twitter.com/DeclanGao/) © 2015.
