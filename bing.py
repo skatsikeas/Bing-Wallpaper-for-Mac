@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-import urllib, urllib2, json, sys
+import urllib, urllib2, json, sys, os
 from os.path import join, expanduser, isfile, exists
 from os import makedirs
-
 
 # Configurations
 # Location to save downloaded wallpapers
@@ -11,17 +10,10 @@ from os import makedirs
 # Or you can set your own custom directory
 IMAGE_DIR = ''
 # ISO country code
-# eg. 'en-US', 'en-NZ', 'zh-CN' or just leave it
-COUNTRY_CODE = ''
-
-
-# Apple Script to set wallpaper
-SCRIPT = """/usr/bin/osascript<<END
-tell application "Finder"
-set desktop picture to POSIX file "%s"
-end tell
-END"""
-
+# eg. 'en-US', 'en-NZ', 'zh-CN' or just leave it empty
+COUNTRY_CODE = 'en-SE'
+# Download image resolution (select among: 1366x768, 1920x1080 or 1920x1200 (this last one adds a Bing logo on the right corner))
+IMAGE_RES = '1920x1080'
 
 def get_wallpaper_path(file_name):
     if '' != IMAGE_DIR.strip():
@@ -38,7 +30,7 @@ def get_wallpaper_path(file_name):
 
 # Download a image with given URL
 def download_image(url, download_only=False):
-    file_name = url.split('/')[-1]
+    file_name = url.split(".")[3] + ".jpg"
     file_path = get_wallpaper_path(file_name)
 
     if isfile(file_path):
@@ -55,8 +47,8 @@ def download_image(url, download_only=False):
 # See http://stackoverflow.com/questions/431205/how-can-i-programatically-change-the-background-in-mac-os-x
 def set_wallpaper(file_path):
     if isfile(file_path):
-        import subprocess
-        subprocess.Popen(SCRIPT%file_path, shell=True)
+        script = "osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file \"" + file_path + "\"'"
+        os.system(script)
         print('Wallpaper set to ' + file_path)
 
 
@@ -122,6 +114,7 @@ def main():
         print('Downloading...')
         for i in range(len(images)):
             url = 'http://www.bing.com' + images[i]['url']
+            url = url.replace("1366x768", IMAGE_RES)
             if flag_download_only:
                 download_image(url, True)
             else:
